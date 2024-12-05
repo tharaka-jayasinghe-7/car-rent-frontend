@@ -54,7 +54,7 @@ export default function Navbar() {
           {/* Logout button */}
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
-              className="px-4 py-2 text-white bg-white text-black rounded-md hover:text-red-500"
+              className="px-4 py-2 text-black bg-white text-black rounded-md hover:text-red-500"
               onClick={() => alert("Logging out...")} // Handle logout functionality
             >
               Logout
