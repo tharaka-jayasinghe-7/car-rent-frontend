@@ -39,8 +39,8 @@ const Cars = () => {
     });
 
   // Handle button click to navigate to booking page
-  const handleBookNowClick = () => {
-    navigate("/book"); // Navigate to /book route
+  const handleBookNowClick = (car) => {
+    navigate("/book", { state: { selectedCar: car } }); // Pass the car data using state
   };
 
   return (
@@ -99,8 +99,8 @@ const Cars = () => {
                 Price for 1 day: LKR {car.price.toLocaleString()}
               </p>
               <button
-                onClick={handleBookNowClick} // Trigger navigation on button click
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={() => handleBookNowClick(car)} // Pass the car object
+                className="mt-4 px-4 py-2 bg-sky-800 text-white rounded hover:bg-sky-700"
               >
                 Book Now
               </button>

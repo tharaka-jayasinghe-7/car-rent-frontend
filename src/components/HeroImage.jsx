@@ -24,7 +24,7 @@ const HeroImage = () => {
           Explore our amazing content and learn more about what we do!
         </p>
         <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg"
+          className="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-4 rounded-lg"
           onClick={handleLoginClick} // Attach the handleLoginClick function
         >
           Login

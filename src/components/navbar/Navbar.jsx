@@ -28,7 +28,7 @@ export default function Navbar() {
   }, [location]); // Only re-run when location changes
 
   return (
-    <Disclosure as="nav" className="bg-white">
+    <Disclosure as="nav" className="bg-sky-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="flex flex-1 items-center justify-center sm:items-stretch">
@@ -40,8 +40,8 @@ export default function Navbar() {
                     to={item.href} // Use Link from react-router-dom to handle routing
                     className={classNames(
                       item.current
-                        ? "bg-gray-900 text-white"
-                        : "text-gray-700 hover:bg-gray-700 hover:text-white",
+                        ? "bg-sky-600 text-white"
+                        : "text-white hover:bg-sky-700 hover:text-white",
                       "rounded-md px-3 py-2 text-sm font-medium"
                     )}
                   >
@@ -54,7 +54,7 @@ export default function Navbar() {
           {/* Logout button */}
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
-              className="px-4 py-2 text-black bg-white text-black rounded-md hover:text-red-500"
+              className="px-4 py-2 text-white bg-sky-800 text-black rounded-md hover:text-gray-300"
               onClick={() => alert("Logging out...")} // Handle logout functionality
             >
               Logout

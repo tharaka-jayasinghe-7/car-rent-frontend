@@ -79,13 +79,13 @@ const Bookings = () => {
                 <td className="py-2 px-4 border-b flex space-x-2">
                   <button
                     onClick={() => handleUpdate(booking.id)}
-                    className="px-4 py-2 bg-sky-700 text-white rounded-lg hover:bg-sky-800"
+                    className="px-4 py-2 bg-sky-800 text-white rounded-lg hover:bg-sky-700"
                   >
                     Update
                   </button>
                   <button
                     onClick={() => handleCancel(booking.id)}
-                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
                   >
                     Delete
                   </button>

@@ -1,21 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar";
 
-const selectedCar = {
-  id: 3,
-  type: "SUV",
-  model: "BMW",
-  name: "BMW X5",
-  price: 10000,
-  description: "Luxury car",
-  image: "https://via.placeholder.com/300x200?text=BMW+X5",
-};
-
 const Book = () => {
+  const location = useLocation(); // Get the location object
+  const selectedCar = location.state?.selectedCar; // Access the car data passed via state
   const [pickupDate, setPickupDate] = useState("");
   const [numberOfDays, setNumberOfDays] = useState(1);
-  const [fullAmount, setFullAmount] = useState(selectedCar.price);
+  const [fullAmount, setFullAmount] = useState(
+    selectedCar ? selectedCar.price : 0
+  );
   const navigate = useNavigate();
 
   const handleNumberOfDaysChange = (e) => {
@@ -42,14 +36,14 @@ const Book = () => {
           {/* Car Details */}
           <div className="mb-6">
             <img
-              src={selectedCar.image}
-              alt={selectedCar.name}
+              src={selectedCar?.image}
+              alt={selectedCar?.name}
               className="w-full h-48 object-cover rounded mb-4"
             />
-            <h3 className="text-lg font-bold">{selectedCar.name}</h3>
-            <p className="text-sm text-gray-600">{selectedCar.description}</p>
+            <h3 className="text-lg font-bold">{selectedCar?.name}</h3>
+            <p className="text-sm text-gray-600">{selectedCar?.description}</p>
             <p className="text-sm font-medium">
-              Price for 1 day: LKR {selectedCar.price.toLocaleString()}
+              Price for 1 day: LKR {selectedCar?.price.toLocaleString()}
             </p>
           </div>
           {/* Form */}
@@ -92,14 +86,14 @@ const Book = () => {
               <button
                 type="button"
                 onClick={handleConfirm}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                className="px-4 py-2 bg-sky-800 text-white rounded hover:bg-sky-700"
               >
                 Confirm
               </button>
               <button
                 type="button"
                 onClick={handleCancel}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
               >
                 Cancel
               </button>
