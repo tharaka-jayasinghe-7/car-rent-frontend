@@ -1,78 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import Navbar from "../components/navbar/Navbar";
-
-// Sample data for the cars
-const carData = [
-  {
-    id: 1,
-    type: "Car",
-    model: "Toyota",
-    name: "Toyota Corolla",
-    price: 5000,
-    description: "Reliable car",
-    image:
-      "https://global.toyota/pages/models/images/20191018/thumbnail/corolla_w610_01.jpg",
-  },
-  {
-    id: 2,
-    type: "Van",
-    model: "Honda",
-    name: "Honda Odyssey",
-    price: 8000,
-    description: "Spacious van",
-    image:
-      "https://static3.toyotabharat.com/images/homepage/services/d27-whats-awesome-547x306.jpg",
-  },
-  {
-    id: 3,
-    type: "SUV",
-    model: "BMW",
-    name: "BMW X5",
-    price: 10000,
-    description: "Luxury car",
-    image:
-      "https://images.dealer.com/ddc/vehicles/2025/Toyota/Camry/Sedan/trim_LE_ed6316/color/Underground-1L7-83%2C81%2C83-640-en_US.jpg?impolicy=downsize_bkpt&imdensity=1&w=520",
-  },
-  {
-    id: 4,
-    type: "Car",
-    model: "Honda",
-    name: "Honda Civic",
-    price: 6000,
-    description: "Fuel-efficient car",
-    image:
-      "https://scene7.toyota.eu/is/image/toyotaeurope/yaris-cross-pcp-offer:Large-Landscape?ts=1728491140700&resMode=sharp2&op_usm=1.75,0.3,2,0&fmt=png-alpha",
-  },
-  {
-    id: 5,
-    type: "Van",
-    model: "Toyota",
-    name: "Toyota HiAce",
-    price: 7000,
-    description: "Perfect for families",
-    image:
-      "https://imgd.aeplcdn.com/664x374/n/cw/ec/132513/7-series-exterior-right-front-three-quarter-3.jpeg?isig=0&q=80",
-  },
-  {
-    id: 6,
-    type: "SUV",
-    model: "Toyota",
-    name: "Toyota RAV4",
-    price: 9000,
-    description: "Versatile SUV",
-    image: "https://media.zigcdn.com/media/model/2023/Jan/x7-1_600x400.jpg",
-  },
-];
+import axios from "axios"; // Import Axios
 
 const Cars = () => {
+  const [cars, setCars] = useState([]); // State to hold car data
   const [selectedType, setSelectedType] = useState("All");
   const [selectedModel, setSelectedModel] = useState("All");
   const [sortOrder, setSortOrder] = useState("default");
   const navigate = useNavigate(); // Initialize useNavigate
 
+  // Fetch data from backend
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/getCars");
+        setCars(response.data); // Update state with fetched cars
+      } catch (error) {
+        console.error("Error fetching cars:", error);
+      }
+    };
+
+    fetchCars();
+  }, []); // Empty dependency array to fetch data only once
+
   // Filter and sort data
-  const filteredData = carData
+  const filteredData = cars
     .filter((car) =>
       selectedType === "All" ? true : car.type === selectedType
     )
