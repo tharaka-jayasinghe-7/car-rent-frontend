@@ -73,7 +73,6 @@ const Profile = () => {
               <input
                 type="text"
                 value={userData.first_name}
-                readOnly
                 className="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100"
               />
             </div>
@@ -84,7 +83,6 @@ const Profile = () => {
               <input
                 type="text"
                 value={userData.last_name}
-                readOnly
                 className="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100"
               />
             </div>
@@ -95,7 +93,6 @@ const Profile = () => {
               <input
                 type="date"
                 value={userData.dob}
-                readOnly
                 className="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100"
               />
             </div>
@@ -106,7 +103,6 @@ const Profile = () => {
               <input
                 type="email"
                 value={userData.email}
-                readOnly
                 className="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100"
               />
             </div>
@@ -117,7 +113,6 @@ const Profile = () => {
               <input
                 type="text"
                 value={userData.mobile}
-                readOnly
                 className="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100"
               />
             </div>
@@ -127,7 +122,6 @@ const Profile = () => {
               </label>
               <textarea
                 value={userData.address}
-                readOnly
                 className="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100"
               />
             </div>

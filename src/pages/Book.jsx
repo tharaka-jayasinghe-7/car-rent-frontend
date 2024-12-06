@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import Navbar from "../components/navbar/Navbar";
 
 const Book = () => {
   const location = useLocation(); // Get the location object
-  const selectedCar = location.state?.selectedCar; // Access the car data passed via state
+  const selectedCar = location.state?.selectedCar;
+  console.log("Selected Car Data:", selectedCar);
   const [pickupDate, setPickupDate] = useState("");
   const [numberOfDays, setNumberOfDays] = useState(1);
   const [fullAmount, setFullAmount] = useState(
     selectedCar ? selectedCar.price : 0
   );
   const navigate = useNavigate();
+  const userId = localStorage.getItem("user_id"); // Get user_id from local storage
 
   const handleNumberOfDaysChange = (e) => {
     const days = parseInt(e.target.value, 10);
@@ -18,9 +21,31 @@ const Book = () => {
     setFullAmount(days * selectedCar.price);
   };
 
-  const handleConfirm = () => {
-    alert(`Booking Confirmed for ${selectedCar.name}!`);
-    navigate("/bookings");
+  const handleConfirm = async () => {
+    if (!pickupDate || numberOfDays <= 0) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    // Booking data
+    const bookingData = {
+      pickup_date: pickupDate,
+      num_of_days: numberOfDays,
+      full_amount: fullAmount,
+    };
+
+    // API call
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/booking/user/${userId}/car/${selectedCar.car_id}/addBooking`,
+        bookingData
+      );
+      alert(`Booking Confirmed! Booking ID: ${response.data.booking_id}`);
+      navigate("/bookings");
+    } catch (error) {
+      console.error("Error adding booking:", error);
+      alert("Failed to confirm booking. Please try again.");
+    }
   };
 
   const handleCancel = () => {
