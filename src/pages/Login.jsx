@@ -32,7 +32,8 @@ const Login = () => {
         const userData = response.data;
 
         // Save user data to local storage
-        localStorage.setItem("loggedInUser", JSON.stringify(userData));
+        localStorage.setItem("user_id", userData.user_id);
+        localStorage.setItem("user_email", userData.email);
 
         // Redirect to another page (e.g., dashboard)
         navigate("/cars");
