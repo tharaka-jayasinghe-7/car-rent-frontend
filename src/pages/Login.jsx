@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // For navigation (optional, if you want to redirect after login)
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate(); // Optional, for redirecting after login
@@ -9,12 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    navigate("/cars");
-  };
-
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Basic form validation
@@ -23,12 +20,31 @@ const Login = () => {
       return;
     }
 
-    // Simulate login (replace with actual login logic)
-    console.log("Email:", email);
-    console.log("Password:", password);
+    try {
+      // Make a POST request with axios
+      const response = await axios.post("http://localhost:8080/user/login", {
+        email,
+        password,
+      });
 
-    // Redirect to the dashboard or home page upon successful login
-    navigate("/dashboard"); // Change the path as needed
+      // If login is successful
+      if (response.status === 200) {
+        const userData = response.data;
+
+        // Save user data to local storage
+        localStorage.setItem("loggedInUser", JSON.stringify(userData));
+
+        // Redirect to another page (e.g., dashboard)
+        navigate("/cars");
+      }
+    } catch (error) {
+      // Handle errors, such as invalid credentials
+      if (error.response && error.response.data) {
+        setError(error.response.data || "Login failed");
+      } else {
+        setError("An error occurred. Please try again.");
+      }
+    }
   };
 
   return (
@@ -91,7 +107,6 @@ const Login = () => {
             {/* Submit button */}
             <button
               type="submit"
-              onClick={handleLogin}
               className="w-full py-2 bg-sky-800 text-white rounded-lg hover:bg-sky-700"
             >
               Login
