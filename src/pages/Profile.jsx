@@ -1,30 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // For navigation
+import axios from "axios";
 import Navbar from "../components/navbar/Navbar";
 
 const Profile = () => {
   const navigate = useNavigate(); // For navigating back
+  const [userData, setUserData] = useState(null); // State to hold user data
+  const [error, setError] = useState(null); // State for errors during API call
 
-  // Sample user data (you can fetch this from an API or state)
-  const [userData] = useState({
-    firstName: "John",
-    lastName: "Doe",
-    dob: "1990-01-01",
-    email: "johndoe@example.com",
-    mobile: "123-456-7890",
-    address: "123 Main St, City, Country",
-  });
+  // Get user ID from local storage or from the URL
+  const userId = localStorage.getItem("user_id");
 
-  // Handle update (can be expanded to handle form submission)
+  useEffect(() => {
+    if (userId) {
+      // Fetch user data from API
+      axios
+        .get(`http://localhost:8080/user/getUser/${userId}`)
+        .then((response) => {
+          setUserData(response.data); // Set the state with user data
+        })
+        .catch((error) => {
+          setError("Failed to load user data. Please try again later.");
+          console.error("Error fetching user data:", error);
+        });
+    } else {
+      setError("User ID is missing.");
+    }
+  }, [userId]);
+
   const handleUpdate = () => {
     alert("Profile Updated!"); // Placeholder for update action
-    // You can add logic to submit form data or update user profile
+    // Add logic to submit form data or update user profile
   };
 
-  // Navigate back to the previous page or homepage
   const handleBack = () => {
     navigate(-1); // Go back to the previous page
   };
+
+  // If userData is not loaded yet or there's an error, show loading or error message
+  if (!userData) {
+    return (
+      <div className="bg-gray-100 min-h-screen">
+        <Navbar />
+        <div className="container mx-auto p-6">
+          <div className="bg-white shadow-lg rounded-lg p-8">
+            {error ? (
+              <p className="text-red-600">{error}</p>
+            ) : (
+              <p>Loading user data...</p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -43,7 +72,7 @@ const Profile = () => {
               </label>
               <input
                 type="text"
-                value={userData.firstName}
+                value={userData.first_name}
                 readOnly
                 className="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100"
               />
@@ -54,7 +83,7 @@ const Profile = () => {
               </label>
               <input
                 type="text"
-                value={userData.lastName}
+                value={userData.last_name}
                 readOnly
                 className="mt-1 p-2 border border-gray-300 rounded w-full bg-gray-100"
               />
