@@ -39,14 +39,29 @@ const Bookings = () => {
     navigate("/updateBooking", { state: { booking } });
   };
 
-  const handleCancel = (id) => {
-    const updatedBookings = bookings.filter(
-      (booking) => booking.bookingId !== id
-    );
-    setBookings(updatedBookings);
-    alert(`Booking with id: ${id} has been cancelled`);
-  };
+  const handleDelete = async (id) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to cancel the booking with ID ${id}?`
+      )
+    ) {
+      return;
+    }
 
+    try {
+      // Make DELETE API call
+      await axios.delete(`http://localhost:8080/booking/deleteBooking/${id}`);
+      // Update the state after successful deletion
+      const updatedBookings = bookings.filter(
+        (booking) => booking.bookingId !== id
+      );
+      setBookings(updatedBookings);
+      alert(`Booking with ID: ${id} has been successfully cancelled.`);
+    } catch (error) {
+      console.error("Error deleting booking:", error);
+      alert("Failed to cancel the booking. Please try again.");
+    }
+  };
   return (
     <div className="bg-gray-100 min-h-screen">
       <Navbar />
@@ -97,7 +112,7 @@ const Bookings = () => {
                     </button>
 
                     <button
-                      onClick={() => handleCancel(booking.bookingId)}
+                      onClick={() => handleDelete(booking.bookingId)}
                       className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
                     >
                       Delete
