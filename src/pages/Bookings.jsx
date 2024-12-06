@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/navbar/Navbar";
+import { useNavigate } from "react-router-dom";
 
 // Function to format the date to "yyyy-MM-dd"
 const formatDate = (date) => {
@@ -11,6 +12,7 @@ const formatDate = (date) => {
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   // Get user ID from local storage
   const userId = localStorage.getItem("user_id");
@@ -32,8 +34,9 @@ const Bookings = () => {
     }
   }, [userId]);
 
-  const handleUpdate = (id) => {
-    alert(`Update booking with id: ${id}`);
+  const handleUpdate = (booking) => {
+    console.log("Booking object passed to update:", booking);
+    navigate("/updateBooking", { state: { booking } });
   };
 
   const handleCancel = (id) => {
@@ -84,13 +87,15 @@ const Bookings = () => {
                   <td className="py-2 px-4 border-b text-black">
                     LKR {booking.fullAmount.toLocaleString()}
                   </td>
+
                   <td className="py-2 px-4 border-b flex space-x-2">
                     <button
-                      onClick={() => handleUpdate(booking.bookingId)}
+                      onClick={() => handleUpdate(booking)} // Pass the booking object
                       className="px-4 py-2 bg-sky-800 text-white rounded-lg hover:bg-sky-700"
                     >
                       Update
                     </button>
+
                     <button
                       onClick={() => handleCancel(booking.bookingId)}
                       className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
