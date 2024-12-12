@@ -1,13 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const HeroImage = () => {
-  const navigate = useNavigate();
-
-  const handleLoginClick = () => {
-    navigate("/login");
-  };
-
+const LoggedInHeroImage = () => {
   return (
     <div className="relative h-screen bg-gray-800 flex items-start justify-center pt-20">
       <img
@@ -21,22 +15,9 @@ const HeroImage = () => {
         <p className="text-xl mb-6">
           This is the best place to rent a car to begin your journey!
         </p>
-        <button
-          className="bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-4 rounded-lg"
-          onClick={handleLoginClick}
-        >
-          Login
-        </button>
-
-        <p className="text-sm mt-4">
-          Don't you have an account?{" "}
-          <a href="/register" className="text-blue-400 hover:underline">
-            Click here to register
-          </a>
-        </p>
       </div>
     </div>
   );
 };
 
-export default HeroImage;
+export default LoggedInHeroImage;

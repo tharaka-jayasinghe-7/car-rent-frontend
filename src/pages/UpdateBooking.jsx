@@ -5,33 +5,30 @@ import Navbar from "../components/navbar/Navbar";
 
 const UpdateBooking = () => {
   const location = useLocation();
-  const booking = location.state?.booking; // Access the passed booking data
+  const booking = location.state?.booking;
   const navigate = useNavigate();
 
   const [pickupDate, setPickupDate] = useState(
     booking?.pickupDate ? booking.pickupDate.split(" ")[0] : ""
-  ); // Format initial pickup date (yyyy-MM-dd)
+  );
   const [numOfDays, setNumOfDays] = useState(booking?.numOfDays || "");
   const [fullAmount, setFullAmount] = useState(booking?.fullAmount || "");
-  const [carId, setCarId] = useState(null); // Store the car ID
-  const baseRate = booking?.carPricePerDay || 100; // Fallback base rate if none provided
+  const [carId, setCarId] = useState(null);
+  const baseRate = booking?.carPricePerDay || 100;
 
-  // Retrieve user_id from local storage
   const userId = localStorage.getItem("user_id");
 
-  // Calculate full amount when numOfDays changes
   useEffect(() => {
     if (numOfDays) {
       setFullAmount(numOfDays * baseRate);
     }
   }, [numOfDays, baseRate]);
 
-  // Fetch car ID using car name
   useEffect(() => {
     if (booking?.carName) {
       axios
         .get(`http://localhost:8080/car/getCarByName`, {
-          params: { name: booking.carName }, // Send car name as request parameter
+          params: { name: booking.carName },
         })
         .then((response) => {
           if (response.data?.car_id) {
@@ -47,7 +44,6 @@ const UpdateBooking = () => {
     }
   }, [booking]);
 
-  // Handle booking update
   const handleUpdate = async () => {
     if (!pickupDate || !numOfDays || !carId || !userId) {
       alert("Please fill in all fields before updating.");
@@ -66,7 +62,7 @@ const UpdateBooking = () => {
         updatedBooking
       );
       alert("Booking updated successfully!");
-      navigate("/bookings"); // Navigate back to bookings page
+      navigate("/bookings");
     } catch (error) {
       console.error("Error updating booking:", error);
       alert("Failed to update booking. Please try again.");
@@ -80,7 +76,6 @@ const UpdateBooking = () => {
         <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
           <h2 className="text-2xl font-bold mb-4">Update Booking</h2>
           <form>
-            {/* Pickup Date */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Pickup Date
@@ -93,7 +88,6 @@ const UpdateBooking = () => {
               />
             </div>
 
-            {/* Number of Days */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Number of Days
@@ -107,7 +101,6 @@ const UpdateBooking = () => {
               />
             </div>
 
-            {/* Full Amount */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Full Amount
@@ -120,7 +113,6 @@ const UpdateBooking = () => {
               />
             </div>
 
-            {/* Update Button */}
             <button
               type="button"
               onClick={handleUpdate}

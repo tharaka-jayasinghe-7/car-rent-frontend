@@ -1,30 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 
 const Cars = () => {
-  const [cars, setCars] = useState([]); // State to hold car data
+  const [cars, setCars] = useState([]);
   const [selectedType, setSelectedType] = useState("All");
   const [selectedModel, setSelectedModel] = useState("All");
   const [sortOrder, setSortOrder] = useState("default");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
-  // Fetch data from backend
   useEffect(() => {
     const fetchCars = async () => {
       try {
         const response = await axios.get("http://localhost:8080/car/getCars");
-        setCars(response.data); // Update state with fetched cars
+        setCars(response.data);
       } catch (error) {
         console.error("Error fetching cars:", error);
       }
     };
 
     fetchCars();
-  }, []); // Empty dependency array to fetch data only once
+  }, []);
 
-  // Filter and sort data
   const filteredData = cars
     .filter((car) =>
       selectedType === "All" ? true : car.type === selectedType
@@ -38,9 +36,8 @@ const Cars = () => {
       return 0;
     });
 
-  // Handle button click to navigate to booking page
   const handleBookNowClick = (car) => {
-    navigate("/book", { state: { selectedCar: car } }); // Pass the car data using state
+    navigate("/book", { state: { selectedCar: car } });
   };
 
   return (
@@ -48,7 +45,6 @@ const Cars = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-          {/* Filters */}
           <div className="flex space-x-4">
             <select
               className="p-2 border border-gray-300 rounded"
@@ -71,7 +67,7 @@ const Cars = () => {
               <option value="BMW">BMW</option>
             </select>
           </div>
-          {/* Sort */}
+
           <div className="flex items-center mt-4 md:mt-0">
             <select
               className="p-2 border border-gray-300 rounded"
@@ -84,7 +80,7 @@ const Cars = () => {
             </select>
           </div>
         </div>
-        {/* Cards */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredData.map((car) => (
             <div key={car.id} className="bg-white shadow rounded p-4">
@@ -99,7 +95,7 @@ const Cars = () => {
                 Price for 1 day: LKR {car.price.toLocaleString()}
               </p>
               <button
-                onClick={() => handleBookNowClick(car)} // Pass the car object
+                onClick={() => handleBookNowClick(car)}
                 className="mt-4 px-4 py-2 bg-sky-800 text-white rounded hover:bg-sky-700"
               >
                 Book Now

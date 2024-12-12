@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // For navigation
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const navigate = useNavigate(); // For navigating after successful registration
+  const navigate = useNavigate();
 
-  // State to store form input values
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     dob: "",
     email: "",
     mobile: "",
@@ -16,9 +15,8 @@ const Register = () => {
     confirmPassword: "",
   });
 
-  const [error, setError] = useState(""); // State to hold error messages
+  const [error, setError] = useState("");
 
-  // Handle form change (updates form data state)
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,21 +24,37 @@ const Register = () => {
     });
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation: Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
 
-    // You can add more validation here if needed (e.g., email format)
+    setError("");
 
-    // Simulate successful registration (you can replace this with actual registration logic)
-    alert("Registration successful!");
-    navigate("/login"); // Redirect to login page after successful registration
+    const { confirmPassword, ...dataToSend } = formData;
+
+    try {
+      const response = await fetch("http://localhost:8080/user/addUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to register. Please try again.");
+      }
+
+      const result = await response.json();
+      alert("Registration successful!");
+      navigate("/login");
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -52,51 +66,45 @@ const Register = () => {
       }}
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>{" "}
-      {/* Dark overlay */}
       <div className="container mx-auto px-16 py-8 relative z-10">
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-xl mx-auto">
           <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
 
-          {/* Display error message if passwords don't match */}
           {error && (
             <div className="bg-red-100 text-red-600 p-2 rounded mb-4 text-center">
               {error}
             </div>
           )}
 
-          {/* Registration Form */}
           <form onSubmit={handleSubmit}>
-            {/* First Name */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 First Name
               </label>
               <input
                 type="text"
-                name="firstName"
-                value={formData.firstName}
+                name="first_name"
+                value={formData.first_name}
                 onChange={handleChange}
                 required
                 className="mt-1 p-2 border border-gray-300 rounded w-full"
               />
             </div>
 
-            {/* Last Name */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Last Name
               </label>
               <input
                 type="text"
-                name="lastName"
-                value={formData.lastName}
+                name="last_name"
+                value={formData.last_name}
                 onChange={handleChange}
                 required
                 className="mt-1 p-2 border border-gray-300 rounded w-full"
               />
             </div>
 
-            {/* Date of Birth */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Date of Birth
@@ -111,7 +119,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Mobile */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Mobile
@@ -126,7 +133,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Address */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700">
                 Address
@@ -140,7 +146,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Email */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Email
@@ -155,7 +160,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Password */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Password
@@ -170,7 +174,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Confirm Password */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700">
                 Confirm Password
@@ -185,7 +188,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
               className="w-full py-2 bg-sky-800 text-white rounded-lg hover:bg-sky-700"

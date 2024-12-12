@@ -7,12 +7,14 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UpdateBooking from "./pages/UpdateBooking";
+import LoggedInHome from "./pages/LoggedInHome";
 
 function App() {
   return (
     <div id>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/loggedInHome" element={<LoggedInHome />} />
         <Route path="/cars" element={<Cars />} />
         <Route path="/book" element={<Book />} />
         <Route path="/bookings" element={<Bookings />} />

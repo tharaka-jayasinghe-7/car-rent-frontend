@@ -1,11 +1,12 @@
+import Navbar from "../components/navbar/Navbar";
+import LoggedInHeroImage from "../components/LoggedInHeroImage";
 import Footer from "../components/Footer";
-import HeroImage from "../components/HeroImage";
 
 function Home() {
   return (
     <div id>
-      <HeroImage />
-
+      <Navbar />
+      <LoggedInHeroImage />
       <div className="min-h-screen flex flex-col">
         <div className="flex-1 flex flex-col items-center mt-20 mb-10 text-center px-4 bg-white">
           <section className="py-4">

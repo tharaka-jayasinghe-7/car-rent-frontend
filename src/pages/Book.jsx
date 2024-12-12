@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from "../components/navbar/Navbar";
 
 const Book = () => {
-  const location = useLocation(); // Get the location object
+  const location = useLocation();
   const selectedCar = location.state?.selectedCar;
   console.log("Selected Car Data:", selectedCar);
   const [pickupDate, setPickupDate] = useState("");
@@ -13,7 +13,7 @@ const Book = () => {
     selectedCar ? selectedCar.price : 0
   );
   const navigate = useNavigate();
-  const userId = localStorage.getItem("user_id"); // Get user_id from local storage
+  const userId = localStorage.getItem("user_id");
 
   const handleNumberOfDaysChange = (e) => {
     const days = parseInt(e.target.value, 10);
@@ -27,14 +27,12 @@ const Book = () => {
       return;
     }
 
-    // Booking data
     const bookingData = {
       pickup_date: pickupDate,
       num_of_days: numberOfDays,
       full_amount: fullAmount,
     };
 
-    // API call
     try {
       const response = await axios.post(
         `http://localhost:8080/booking/user/${userId}/car/${selectedCar.car_id}/addBooking`,
@@ -58,7 +56,6 @@ const Book = () => {
       <Navbar />
       <div className="flex items-center justify-center pt-12">
         <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-          {/* Car Details */}
           <div className="mb-6">
             <img
               src={selectedCar?.image}
@@ -71,7 +68,7 @@ const Book = () => {
               Price for 1 day: LKR {selectedCar?.price.toLocaleString()}
             </p>
           </div>
-          {/* Form */}
+
           <form>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
